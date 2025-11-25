@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Meses Juntos ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 1.5s ease;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #game-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        canvas {
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+            display: block;
+        }
+
+        #celebration {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff4081;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            color: #333;
+            max-width: 80%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message h2 {
+            color: #e91e63;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .message-content {
+            overflow-y: auto;
+            max-height: 60vh;
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .message-content p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Estilo para la barra de scroll */
+        .message-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .message-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .message-content::-webkit-scrollbar-thumb {
+            background: #e91e63;
+            border-radius: 10px;
+        }
+
+        .message-content::-webkit-scrollbar-thumb:hover {
+            background: #c2185b;
+        }
+
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #c2185b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #instructions {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+        .romantic-bg {
+            background: linear-gradient(135deg, #ff4e8d, #8b2e8b) !important;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            color: white;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JUEGO DE ARKANOID</h1>
+        
+        <div id="game-container">
+            <div id="score">Bloques rotos: <span id="blocks-count">0</span>/3</div>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            
+            <div id="celebration">
+                <div class="hearts" id="hearts-container"></div>
+                <div class="message">
+                    <h2>¡Feliz 2 Meses Mi Amor!</h2>
+                    <div class="message-content">
+                        <p> ♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡.</p>
+                        <p> ♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡.</p>
+                        <p> ♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡.</p>
+                        <p> ♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡.</p>
+                        <p> ♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡.</p>
+                        <p>Estos dos meses han sido increíbles a tu lado.</p>
+                        <p>Cada día contigo es especial y lleno de alegría.</p>
+                        <p>Contigo mi amor bella todo es mejor y eso me encanta mucho.</p>
+                        <p>Gracias amor no es suficiente para decirte y demostrarte.</p>
+                        <p>Lo mucho que me haces feliz, lo mucho que le haces bien a mi corazón.</p>
+                        <p>MI AMOR ME ENCANTAS TODA ME ENCANTAS, ME ENCANTA LO GRACIOSA.</p>
+                        <p>ME ENCANTA LO AMABLE ME ENCANTA TU CORAZONCITO ME ENCANTAS TU.</p>
+                        <p>ME ENCANTAN TUS RISAS TU FORMA DE SER TU NATURALEZA ME ENCANTA ME FASCINAS.</p>
+                        <p>ME ENCANTA COMO ERES AMOR TAN PURA Y UNICA ME ENCANTA QUE CUANDO DUERMO.</p>
+                        <p>Lo unico y primero que mi cerebro sueña e ilustra es a ti mi amor.</p>
+                        <p>Veo tus hermosos ojos, tu pelo, tu aroma, tu sonrisa, tu piel.</p>
+                        <p>Desde que te conoci amor no hay dia que no pase sin ver tus fotos.</p>
+                        <p>Minimo 30 minutos me la paso en galeria viendo tus fotos y esuchando.</p>
+                        <p>La playlist que me dedicas me encanta amor bella.</p>
+                        <p>Todo amor eres para mi la unica de verdad amor.</p>
+                        <p>QUIERO SER TUYO TU ESCLAVO TU PERRO TU TODO AMOR TUYO Y SOLAMENTE TUYO.</p>
+                        <p>¡Te amo!</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                        <p>TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO TE AMO.</p>
+                    </div>
+                    <button id="restart-btn">Jugar de Nuevo</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="instructions">
+            <p>Usa las flechas izquierda y derecha para mover la plataforma</p>
+            <p>Rompe 3 bloques </p>
+            <p>¡La pelota solo rebota en la plataforma!</p>
+        </div>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const celebration = document.getElementById('celebration');
+        const heartsContainer = document.getElementById('hearts-container');
+        const restartBtn = document.getElementById('restart-btn');
+        const body = document.body;
+        const blocksCountElement = document.getElementById('blocks-count');
+
+        // Variables del juego
+        let paddle = {
+            x: canvas.width / 2 - 50,
+            y: canvas.height - 20,
+            width: 100,
+            height: 10,
+            speed: 8
+        };
+
+        let ball = {
+            x: canvas.width / 2,
+            y: canvas.height - 30,
+            radius: 8,
+            speedX: 4,
+            speedY: -4
+        };
+
+        let blocks = [];
+        let blocksBroken = 0;
+        let gameActive = true;
+        let rightPressed = false;
+        let leftPressed = false;
+
+        // Crear bloques
+        function createBlocks() {
+            blocks = [];
+            const rows = 3;
+            const cols = 8;
+            const blockWidth = 70;
+            const blockHeight = 20;
+            const padding = 10;
+            const offsetTop = 30;
+            const offsetLeft = 20;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    blocks.push({
+                        x: c * (blockWidth + padding) + offsetLeft,
+                        y: r * (blockHeight + padding) + offsetTop,
+                        width: blockWidth,
+                        height: blockHeight,
+                        status: 1
+                    });
+                }
+            }
+        }
+
+        // Dibujar elementos del juego
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
+            ctx.fillStyle = '#e91e63';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffeb3b';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBlocks() {
+            for (let i = 0; i < blocks.length; i++) {
+                if (blocks[i].status === 1) {
+                    ctx.beginPath();
+                    ctx.rect(blocks[i].x, blocks[i].y, blocks[i].width, blocks[i].height);
+                    ctx.fillStyle = '#4caf50';
+                    ctx.fill();
+                    ctx.closePath();
+                }
+            }
+        }
+
+        // Detectar colisiones con la paleta (con física mejorada)
+        function paddleCollision() {
+            // Verificar si la pelota está en la misma vertical que la paleta
+            if (ball.y + ball.radius >= paddle.y && 
+                ball.y - ball.radius <= paddle.y + paddle.height &&
+                ball.x + ball.radius >= paddle.x && 
+                ball.x - ball.radius <= paddle.x + paddle.width) {
+                
+                // Calcular el punto de impacto en la paleta (de -1 a 1)
+                let hitPoint = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
+                
+                // Ajustar el ángulo de rebote según el punto de impacto
+                let angle = hitPoint * (Math.PI / 3); // Máximo 60 grados
+                
+                // Calcular nuevas velocidades
+                let speed = Math.sqrt(ball.speedX * ball.speedX + ball.speedY * ball.speedY);
+                ball.speedX = speed * Math.sin(angle);
+                ball.speedY = -speed * Math.cos(angle);
+                
+                // Asegurar que la pelota no se quede atrapada
+                ball.y = paddle.y - ball.radius;
+            }
+        }
+
+        // Detectar colisiones con bloques
+        function collisionDetection() {
+            for (let i = 0; i < blocks.length; i++) {
+                let b = blocks[i];
+                if (b.status === 1) {
+                    if (ball.x > b.x && ball.x < b.x + b.width && 
+                        ball.y > b.y && ball.y < b.y + b.height) {
+                        ball.speedY = -ball.speedY;
+                        b.status = 0;
+                        blocksBroken++;
+                        blocksCountElement.textContent = blocksBroken;
+                        
+                        // Si se rompen 3 bloques, mostrar celebración
+                        if (blocksBroken >= 3) {
+                            showCelebration();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Mostrar celebración
+        function showCelebration() {
+            gameActive = false;
+            celebration.style.display = 'flex';
+            body.classList.add('romantic-bg');
+            
+            // Crear corazones flotantes
+            for (let i = 0; i < 30; i++) {
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartsContainer.appendChild(heart);
+        }
+
+        // Reiniciar juego
+        function resetGame() {
+            blocksBroken = 0;
+            blocksCountElement.textContent = blocksBroken;
+            gameActive = true;
+            celebration.style.display = 'none';
+            body.classList.remove('romantic-bg');
+            
+            // Limpiar corazones
+            heartsContainer.innerHTML = '';
+            
+            // Resetear posición de la pelota y paleta
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height - 30;
+            ball.speedX = 4;
+            ball.speedY = -4;
+            
+            paddle.x = canvas.width / 2 - 50;
+            
+            // Recrear bloques
+            createBlocks();
+            
+            // Reiniciar el bucle del juego
+            requestAnimationFrame(draw);
+        }
+
+        // Bucle principal del juego
+        function draw() {
+            if (!gameActive) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawBlocks();
+            drawPaddle();
+            drawBall();
+            collisionDetection();
+            paddleCollision();
+            
+            // Mover la pelota
+            ball.x += ball.speedX;
+            ball.y += ball.speedY;
+            
+            // Detectar colisiones con las paredes
+            if (ball.x + ball.speedX > canvas.width - ball.radius || ball.x + ball.speedX < ball.radius) {
+                ball.speedX = -ball.speedX;
+            }
+            
+            if (ball.y + ball.speedY < ball.radius) {
+                ball.speedY = -ball.speedY;
+            }
+            
+            // Si la pelota cae al fondo, reiniciar posición
+            if (ball.y + ball.speedY > canvas.height) {
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height - 30;
+                ball.speedX = 4;
+                ball.speedY = -4;
+            }
+            
+            // Mover la paleta
+            if (rightPressed && paddle.x < canvas.width - paddle.width) {
+                paddle.x += paddle.speed;
+            } else if (leftPressed && paddle.x > 0) {
+                paddle.x -= paddle.speed;
+            }
+            
+            requestAnimationFrame(draw);
+        }
+
+        // Event listeners para teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = true;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = false;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = false;
+            }
+        });
+
+        // Event listener para el botón de reinicio
+        restartBtn.addEventListener('click', resetGame);
+
+        // Inicializar juego
+        createBlocks();
+        draw();
+    </script>
+</body>
+</html>
